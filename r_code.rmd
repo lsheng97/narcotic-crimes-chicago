@@ -1,0 +1,399 @@
+## Exploratory Data Analysis
+
+Part 1
+```{r}
+df = readRDS("da.Rdata")
+df$CrimeTotal = rowSums(df[,9:10])
+nrow(df)
+
+total_population = df$poptotal
+male_income = df$income.male
+female_income = df$income.female
+male_age = df$age.male
+female_age = df$age.female
+latitude = df$latitude
+longitude = df$longitude
+narcotic_crime = df$CrimeC
+non_narcotic_crime = df$CrimeNC
+white = df$pctWhite
+black = df$pctBlack
+asian = df$pctAsian
+total_crime = df$CrimeTotal
+ward = df$Ward
+zone = df$zone
+```
+
+```{r}
+cor(df)
+```
+
+```{r}
+# Univariate EDA
+summary(df[c("poptotal", "income.male", "income.female", "age.male", "age.female", "latitude", "longitude", "CrimeC", "CrimeNC", "pctWhite", "pctBlack", "pctAsian", "CrimeTotal", "zone", "Ward")])
+
+par(mfrow=c(2,3))
+hist(df$poptotal, main="Histogram of Total Population", xlab="Total Population")
+hist(df$income.male, main="Histogram of Male Income", xlab="Male Income")
+hist(df$income.female, main="Histogram of Female Income", xlab="Female Income")
+hist(df$age.male, main="Histogram of Male Age", xlab="Male Age")
+hist(df$age.female, main="Histogram of Female Age", xlab="Female Age")
+hist(df$latitude, main="Histogram of Latitude", xlab="Latitude")
+hist(df$longitude, main="Histogram of Longitude", xlab="Longitude")
+hist(df$CrimeC, main="Histogram of Cannabis Crimes", xlab="Cannabis Crimes")
+hist(df$CrimeNC, main="Histogram of Non-Cannabis Crimes", xlab="Non-Cannabis Crimes")
+hist(df$CrimeTotal, main="Histogram of Total Crime", xlab="Total Crime")
+hist(df$pctWhite, main="Histogram of Proportion of Whites", xlab="Proportion of Whites")
+hist(df$pctBlack, main="Histogram of Proportion of Blacks", xlab="Proportion of Blacks")
+hist(df$pctAsian, main="Histogram of Proportion of Asians", xlab="Proportion of Asians")
+```
+
+```{r}
+sum(df$zone=="1")
+sum(df$zone=="0")
+```
+
+Part 2
+```{r}
+# Multivariate EDA with Total Crime 
+par(mfrow=c(2,3))
+plot(total_population, total_crime, main="Total Crime vs. Total Population")
+abline(lm(total_crime~total_population), col="red")
+plot(male_income, total_crime, main="Total Crime vs. Male Income")
+abline(lm(total_crime~male_income), col="red")
+plot(female_income, total_crime, main="Total Crime vs. Female Income")
+abline(lm(total_crime~female_income), col="red")
+plot(white, total_crime, main="Total Crime vs. White")
+abline(lm(total_crime~white), col="red")
+plot(black, total_crime, main="Total Crime vs. Black")
+abline(lm(total_crime~black), col="red")
+plot(asian, total_crime, main="Total Crime vs. Asian")
+abline(lm(total_crime~asian), col="red")
+plot(female_age, total_crime, main="Total Crime vs. Female Age")
+abline(lm(total_crime~female_age), col="red")
+plot(male_age, total_crime, main="Total Crime vs. Male Age")
+abline(lm(total_crime~male_age), col="red")
+plot(latitude, total_crime, main="Total Crime vs. Latitude")
+abline(lm(total_crime~latitude), col="red")
+plot(longitude, total_crime, main="Total Crime vs. Longitude")
+abline(lm(total_crime~longitude), col="red")
+plot(narcotic_crime, total_crime, main="Total Crime vs. Narcotic Crime")
+abline(lm(total_crime~narcotic_crime), col="red")
+plot(non_narcotic_crime, total_crime, main="Total Crime vs. Non-Narcotic Crime")
+abline(lm(total_crime~non_narcotic_crime), col="red")
+boxplot(total_crime~zone, xlab="Zone", ylab="Total Crime", main="Total Crime vs. Zone")
+boxplot(total_crime~ward, xlab="Ward", ylab="Total Crime", main="Total Crime vs. Ward")
+```
+
+```{r}
+# Multivariate EDA with Narcotic Crime
+par(mfrow=c(2,3))
+plot(total_population, narcotic_crime, main="Narcotic Crime vs. Total Population")
+abline(lm(narcotic_crime~total_population), col="red")
+plot(male_income, narcotic_crime, main="Narcotic Crime vs. Male Income")
+abline(lm(narcotic_crime~male_income), col="red")
+plot(female_income, narcotic_crime, main="Narcotic Crime vs. Female Income")
+abline(lm(narcotic_crime~female_income), col="red")
+plot(white, narcotic_crime, main="Narcotic Crime vs. White")
+abline(lm(narcotic_crime~white), col="red")
+plot(black, narcotic_crime, main="Narcotic Crime vs. Black")
+abline(lm(narcotic_crime~black), col="red")
+plot(asian, narcotic_crime, main="Narcotic Crime vs. Asian")
+abline(lm(narcotic_crime~asian), col="red")
+plot(female_age, narcotic_crime, main="Narcotic Crime vs. Female Age")
+abline(lm(narcotic_crime~female_age), col="red")
+plot(male_age, narcotic_crime, main="Narcotic Crime vs. Male Age")
+abline(lm(narcotic_crime~male_age), col="red")
+plot(latitude, narcotic_crime, main="Narcotic Crime vs. Latitude")
+abline(lm(narcotic_crime~latitude), col="red")
+plot(longitude, narcotic_crime, main="Narcotic Crime vs. Longitude")
+abline(lm(narcotic_crime~longitude), col="red")
+plot(non_narcotic_crime, narcotic_crime, main="Narcotic Crime vs. Non-Narcotic Crime")
+abline(lm(narcotic_crime~non_narcotic_crime), col="red")
+plot(total_crime, narcotic_crime, main="Narcotic Crime vs. Total Crime")
+abline(lm(narcotic_crime~total_crime), col="red")
+boxplot(narcotic_crime~zone, xlab="Zone", ylab="Narcotic Crime", main="Narcotic Crime vs. Zone")
+boxplot(narcotic_crime~ward, xlab="Ward", ylab="Narcotic Crime", main="Narcotic Crime vs. Ward")
+``` 
+
+```{r}
+# Multivariate EDA with Non-Narcotic Crime
+par(mfrow=c(2,3))
+plot(total_population, non_narcotic_crime, main="Non-Narcotic Crime vs. Total Population")
+abline(lm(non_narcotic_crime~total_population), col="red")
+plot(male_income, non_narcotic_crime, main="Non-Narcotic Crime vs. Male Income")
+abline(lm(non_narcotic_crime~male_income), col="red")
+plot(female_income, non_narcotic_crime, main="Non-Narcotic Crime vs. Female Income")
+abline(lm(non_narcotic_crime~female_income), col="red")
+plot(white, non_narcotic_crime, main="Non-Narcotic Crime vs. White")
+abline(lm(non_narcotic_crime~white), col="red")
+plot(black, non_narcotic_crime, main="Non-Narcotic Crime vs. Black")
+abline(lm(non_narcotic_crime~black), col="red")
+plot(asian, non_narcotic_crime, main="Non-Narcotic Crime vs. Asian")
+abline(lm(non_narcotic_crime~asian), col="red")
+plot(female_age, non_narcotic_crime, main="Non-Narcotic Crime vs. Female Age")
+abline(lm(non_narcotic_crime~female_age), col="red")
+plot(male_age, non_narcotic_crime, main="Non-Narcotic Crime vs. Male Age")
+abline(lm(non_narcotic_crime~male_age), col="red")
+plot(latitude, non_narcotic_crime, main="Non-Narcotic Crime vs. Latitude")
+abline(lm(non_narcotic_crime~latitude), col="red")
+plot(longitude, non_narcotic_crime, main="Non-Narcotic Crime vs. Longitude")
+abline(lm(non_narcotic_crime~longitude), col="red")
+plot(total_crime, non_narcotic_crime, main="Non-Narcotic Crime vs. Total Crime")
+abline(lm(non_narcotic_crime~total_crime), col="red")
+plot(narcotic_crime, non_narcotic_crime, main="Non-Narcotic Crime vs. Narcotic Crime")
+abline(lm(non_narcotic_crime~narcotic_crime), col="red")
+boxplot(non_narcotic_crime~zone, xlab="Zone", ylab="Non-Narcotic Crime", main="Non-Narcotic Crime vs. Zone")
+boxplot(non_narcotic_crime~ward, xlab="Ward", ylab="Non-Narcotic Crime", main="Non-Narcotic Crime vs. Ward")
+```
+
+Part 3
+```{r}
+# Highest and lowest Narcotic Crime rate blocks
+low.c=quantile(df$CrimeC, c(0.05))
+high.c=quantile(df$CrimeC, c(0.95))
+
+low.long.c=df$longitude[df$CrimeC==low.c]
+high.long.c=df$longitude[df$CrimeC==high.c]
+low.lat.c=df$latitude[df$CrimeC==low.c]
+high.lat.c=df$latitude[df$CrimeC==high.c]
+
+plot(cbind(low.lat.c, low.long.c), pch=19,main="Highest and Lowest 5% Cannabis Crimes", ylab="Longitude", xlab="Latitude")
+points(cbind(high.lat.c, high.long.c), col="red", pch=19)
+legend("topright", legend=c("Lowest 5%", "Highest 5%"), col=c("black", "red"), cex=0.7, pch=19)
+```
+
+```{r}
+# Highest and lowest Non-Narcotic Crime rate blocks
+low.nc=quantile(df$CrimeNC, c(0.05))
+high.nc=quantile(df$CrimeNC, c(0.95))
+
+low.long.nc=df$longitude[df$CrimeNC==low.nc]
+high.long.nc=df$longitude[df$CrimeNC==high.nc]
+low.lat.nc=df$latitude[df$CrimeNC==low.nc]
+high.lat.nc=df$latitude[df$CrimeNC==high.nc]
+
+plot(cbind(low.lat.nc, low.long.nc), pch=19, main="Highest and Lowest 5% Non-Cannabis Crimes", ylab="Longitude", xlab="Latitude")
+points(cbind(high.lat.nc, high.long.nc), col="red", pch=19)
+legend("topright", legend=c("Lowest 5%", "Highest 5%"), col=c("black", "red"), cex=0.7, pch=19)
+```
+
+## Initial Modeling & Diagnostics
+
+Part 4
+```{r}
+library(MASS)
+df$zone=as.factor(df$zone)
+df$Ward=as.factor(df$Ward)
+```
+
+```{r}
+# Model 1 based on EDA
+model1 = lm(CrimeTotal~.-CrimeNC-CrimeC-longitude-pctAsian-poptotal, data=df)
+summary(model1)
+plot(model1, which=c(1,2,3))
+```
+
+```{r}
+# Model 2 based on LASSO
+library(glmnet)
+df = na.omit(df)
+x = model.matrix(CrimeTotal~.-CrimeNC-CrimeC, data=df)
+y = df$CrimeTotal
+
+set.seed(1)
+train=sample(1:nrow(x), nrow(x)/2)
+test=(-train)
+y.test=y[test]
+```
+
+```{r}
+lasso.mod = glmnet(x[train,], y[train], alpha=1)
+
+cv.out = cv.glmnet(x[train,], y[train], alpha=1)
+best.lam = cv.out$lambda.min
+lasso.pred = predict(lasso.mod, s=best.lam, newx=x[test,])
+mean((lasso.pred-y.test)^2)
+
+out=glmnet(x,y,alpha=1)
+lasso.coef = predict(out, type="coefficients", s=best.lam)
+lasso.coef
+```
+
+```{r}
+model2 = lm(CrimeTotal~.-pctWhite-income.male-CrimeC-CrimeNC, data=df)
+summary(model2)
+plot(resid(model2))
+plot(model2, which=c(1,2,3))
+```
+
+Part 5
+```{r}
+set.seed(1)
+idx.test=sample(1:nrow(df), floor(0.3*nrow(df)))
+test=df[idx.test,]
+train=df[-idx.test,]
+```
+
+```{r}
+# test/train err for EDA model
+tempmod=lm(CrimeTotal~.-CrimeNC-CrimeC-longitude-pctAsian-poptotal, data=df)
+predprobs_train=predict(tempmod, newdata=train, type='response')
+
+train.err=mean((predprobs_train-train$CrimeTotal)^2)
+train.err
+
+predprobs_test=predict(tempmod, newdata=test, type="response")
+test.err=mean((predprobs_test-test$CrimeTotal)^2)
+test.err
+```
+
+```{r}
+# test/train error for LASSO model
+tempmod=lm(CrimeTotal~.-pctWhite-income.male-CrimeC-CrimeNC, data=df)
+predprobs_train=predict(tempmod, newdata=train, type='response')
+
+train.err=mean((predprobs_train-train$CrimeTotal)^2)
+train.err
+
+predprobs_test=predict(tempmod, newdata=test, type="response")
+test.err=mean((predprobs_test-test$CrimeTotal)^2)
+test.err
+```
+
+```{r}
+# prediction errors
+nfold=5
+samp=sample(rep(1:nfold,ceiling(nrow(df)/nfold))[1:nrow(df)])
+prederr=matrix(NA, 5, 2)
+
+for (k in 1:5){
+  testd=df[samp==k,]
+  traind=df[!(samp==k),]
+  fit1=lm(CrimeTotal~.-CrimeNC-CrimeC-longitude-pctAsian-poptotal, data=df)
+  prederr[k,1]=mean((predict(fit1,newdata=testd)-testd$CrimeTotal)^2)
+  fit2=lm(CrimeTotal~.-pctWhite-income.male-latitude-longitude-income.male-poptotal-CrimeC-CrimeNC, data=df)
+  prederr[k,2]=mean((predict(fit2,newdata=testd)-testd$CrimeTotal)^2)
+}
+prederr
+apply(prederr,2,mean)
+```
+
+```{r}
+# bootstrap
+B=200
+n=nrow(df)
+boot_indices=replicate(B, sample(1:n, n, replace=TRUE))
+get_errors=function(boot_indices, nfold, df){
+  n=length(boot_indices)
+  samp=sample(rep(1:nfold, ceiling(n/nfold))[1:n])
+  prederr1=rep(NA, nfold)
+  prederr2=rep(NA, nfold)
+  tempdata=df[boot_indices,]
+  
+  for (j in 1:nfold){
+    traind=tempdata[samp!=j,]
+    testd=tempdata[samp==j,]
+    fit1=lm(CrimeTotal~.-CrimeNC-CrimeC-longitude-pctAsian-poptotal, data=df)
+    pred1=predict(fit1, newdata=testd)
+    prederr1[j]=mean((pred1-testd$CrimeTotal)^2)
+    
+    fit2=lm(CrimeTotal~.-pctWhite-income.male-latitude-longitude-income.male-poptotal-CrimeC-CrimeNC, data=df)
+    pred2=predict(fit2, newdata=testd)
+    prederr2[j]=mean((pred2-testd$CrimeTotal)^2)
+  }
+  return(mean(prederr1-prederr2))
+}
+
+test_errors=apply(boot_indices, 2, get_errors, nfold=5, df)
+print(mean(test_errors>0))
+```
+
+Part 6
+```{r}
+model2 = lm(CrimeTotal~.-pctWhite-latitude-longitude-income.male-poptotal-CrimeC-CrimeNC, data=df)
+summary(model2)
+plot(resid(model2))
+plot(resid(model2)^2)
+plot(model2, which=c(1,2))
+```
+
+## Results
+
+Part 9
+```{r}
+full.mod = lm(CrimeTotal~.-CrimeC-CrimeNC, data=df)
+anova(full.mod)
+```
+
+```{r}
+geo.mod = lm(CrimeTotal~zone+longitude+latitude+Ward, data=df)
+anova(geo.mod)
+```
+
+```{r}
+demo.mod = lm(CrimeTotal~poptotal+income.male+income.female+age.male+age.female+pctWhite+pctBlack+pctAsian, data=df)
+anova(demo.mod)
+```
+
+Part 10
+```{r}
+zone.c1 = lm(CrimeC~zone+age.female+age.male+ward+pctBlack+pctAsian, data=df)
+summary(zone.c1)
+
+zone.nc1 = lm(CrimeNC~zone+age.female+age.male+ward+pctBlack+pctAsian, data=df)
+summary(zone.nc1)
+```
+
+```{r}
+z.score = (coef(zone.c1)[[2]]-coef(zone.nc1)[[2]])/sqrt(summary(zone.c1)$coefficients[2,2]^2 + summary(zone.nc1)$coefficients[2,2]^2)
+
+p.val = 2*pnorm(-abs(z.score))
+p.val
+```
+
+Part 11
+```{r}
+library(dplyr)
+new.df1 = df %>%
+  group_by(Ward) %>%
+  summarize(CrimeTotal = sum(CrimeTotal))
+
+new.df2 = df %>%
+  group_by(Ward) %>%
+  summarize(PopTotal = sum(poptotal))
+```
+
+```{r}
+new.df = cbind(new.df1, new.df2)
+new.df[,3]=NULL
+
+new.df=new.df[order(new.df$CrimeTotal,decreasing=TRUE),]
+new.df$original=1:50
+new.df
+
+count.mod = lm(CrimeTotal~PopTotal, data=new.df)
+summary(count.mod)
+
+new.df$resid=resid(count.mod)
+new.df
+new.new.df=new.df[order(new.df$resid, decreasing=TRUE),]
+new.new.df$new=1:50
+new.new.df[c("new", "original", "Ward")]
+```
+
+Part 12
+```{r}
+crime.mod1=lm(CrimeC~CrimeNC, data=df)
+summary(crime.mod1)
+plot(crime.mod1, which=c(1,2,3))
+```
+
+```{r}
+crime.mod2=lm(CrimeC ~ CrimeNC+log(poptotal)+log(income.male)+log(income.female)+age.male +age.female+Ward+longitude+latitude+zone+pctWhite+pctBlack+pctAsian, data=df)
+summary(crime.mod2)
+plot(crime.mod2, which=c(1,2,3))
+```
+
+```{r}
+cor(df$CrimeC, df$CrimeNC)
+```
